@@ -11,6 +11,9 @@ root.minsize(500,500)
 root.geometry("500x500+20+100")
 changed = False
 mean = False
+median = False
+maxvar = False
+minvar = False
 Thje_df = pd.read_csv('SydneyHousePrices.csv') #Defining the dataset
 Thje_df = Thje_df.drop(columns=['Id']) #Removing something useless.
 #Text Test
@@ -108,7 +111,7 @@ def Table():
         os.system('cls')
 
 def Exit():
-    global root, text
+    global root, text, new_df, Thje_df
     root.destroy()
     root = Tk()
     root.title("Bonus Measurements") #GUI name
@@ -118,21 +121,107 @@ def Exit():
     root.geometry("500x500+20+100")
     text = Label(root, text="STEP 2:") 
     text.pack()
-    text2 = Label(root, text="Check extra measurements to be added to dataset")
+    text2 = Label(root, text="Choose extra measurements to be added to the data.")
     text2.pack()
-    var = IntVar()  # variable class
-    item1 = Checkbutton(root, text="Sell Price Mean",
-            variable=var, command=Mean("sellPrice"))
-    item1.pack(anchor='w')
+    options = [ 
+    "(None)",
+    "Mean",
+    "Median",
+    "Highest Value",
+    "Lowest Value",
+    "Range",
+    "Lower Quartile",
+    "Upper Quartile",
+    "Interquartile Range",
+    "All"
+    ] 
+    clicked = StringVar() 
+    clicked.set( "(None)" ) 
+    drop = OptionMenu( root , clicked , *options ) 
+    drop.pack() 
+    Columns = ["Default"]
+    try:
+      if Thje_df["sellPrice"].equals(new_df["sellPrice"]):
+        Columns.append("Sell Price")
+        var0 = True
+    except:
+        None
+    try:
+      if Thje_df["bed"].equals(new_df["bed"]):
+          Columns.append("Bedroom Count")
+          var1 = True
+    except:
+        None
+    try:
+      if Thje_df["bath"].equals(new_df["bath"]):
+        Columns.append("Bathroom Count")
+        var2 = True
+    except:
+        None
+    try:
+      if Thje_df["car"].equals(new_df["car"]):
+        Columns.append("Car Space Count")
+        var3 = True
+    except:
+        None
+    try:
+        if var1 == var2 == var3 == var0 == True:
+            Columns.append("All")
+    except:
+        None
+    clicked2 = StringVar() 
+    clicked2.set( "Default" ) 
+    drop2 = OptionMenu( root , clicked2 , *Columns ) 
+    drop2.pack() 
+    root.mainloop()
 def Mean(var):
-    global mean
+    global mean, new_df
     if mean != True:
       new_df[f"{var} Mean"] = new_df[var].mean(skipna=True, numeric_only=True)
       mean = True
       print(new_df)
     else:
         mean = False
-
+def Median(var):
+    global median, new_df
+    if median != True:
+      new_df[f"{var} Median"] = new_df[var].median(skipna=True, numeric_only=True)
+      median = True
+      print(new_df)
+    else:
+        median = False
+def Max(var):
+    global maxvar, new_df
+    if maxvar != True:
+      new_df[f"{var} Maximum"] = new_df[var].max(skipna=True, numeric_only=True)
+      maxvar = True
+      print(new_df)
+    else:
+        maxvar = False
+def Min(var):
+    global minvar, new_df
+    if minvar != True:
+      new_df[f"{var} Minimum"] = new_df[var].min(skipna=True, numeric_only=True)
+      minvar = True
+      print(new_df)
+    else:
+        minvar = False
+def LQ(var):
+    global lq, new_df
+    if lq != True:
+      new_df[f"{var} Lower Quartile"] = new_df[var].quantile(q= 0.25, skipna=True, numeric_only=True)
+      lq = True
+      print(new_df)
+    else:
+        lq = False
+def UQ(var):
+    global uq, new_df
+    if uq != True:
+      new_df[f"{var} Upper Quartile"] = new_df[var].quantile(q= 0.75, skipna=True, numeric_only=True)
+      uq = True
+      print(new_df)
+    else:
+        uq = False
     
 var = IntVar()  # variable class
 item1 = Checkbutton(root, text="Date",
