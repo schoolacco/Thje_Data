@@ -1,6 +1,6 @@
 from tkinter import *
 import pandas as pd
-import matplotlib.pyplot as mlp
+import matplotlib.pyplot as plt
 import time
 import os
 os.system('cls')
