@@ -140,7 +140,7 @@ def Exit():
     clicked.set( "(None)" ) 
     drop = OptionMenu( root , clicked , *options ) 
     drop.pack() 
-    Columns = ["Default"]
+    Columns = ["(None)"]
     try:
       if Thje_df["sellPrice"].equals(new_df["sellPrice"]):
         Columns.append("Sell Price")
@@ -223,6 +223,10 @@ def UQ(var):
       print(new_df)
     else:
         uq = False
+def range():
+    None
+def IQrange():
+    None
     
 var = IntVar()  # variable class
 item1 = Checkbutton(root, text="Date",
