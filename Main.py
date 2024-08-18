@@ -224,7 +224,9 @@ def UQ(var):
     else:
         uq = False
 def range():
-    None
+    global Range, new_df
+    if Range != True:
+      new_df
 def IQrange():
     None
     
