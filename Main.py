@@ -11,14 +11,6 @@ root.maxsize(10000,10000)
 root.minsize(500,500)
 root.geometry("500x500+20+100")
 changed = False
-mean = False
-median = False
-maxvar = False
-minvar = False
-lq = False
-uq = False
-Range = False
-ir = False
 Thje_df = pd.read_csv('SydneyHousePrices.csv') #Defining the dataset
 Thje_df = Thje_df.drop(columns=['Id']) #Removing something useless.
 #Text Test
@@ -27,86 +19,13 @@ text.pack()
 text2 = Label(root, text="Check options to be removed from dataset.")
 text2.pack()
 new_df = Thje_df
-previous_df = Thje_df
-def selectItems():
-    global new_df, changed, previous_df
-    if  var.get():  # If the button is checked,
-        previous_df = new_df        
-        new_df = previous_df.drop(columns=["Date"])  # Print print the cb's text
+def selectItems(var,string):
+    global new_df, changed
+    if  var.get():  # If the button is checked,    
+        new_df = new_df.drop(columns=[string])  # Print print the cb's text
         changed = True
-    else:
-        new_df = previous_df        
-        new_df["Date"] = Thje_df["Date"]
-def selectItems2():
-    global new_df, changed, previous_df
-    if  var2.get():  # If the button is checked,
-        previous_df = new_df        
-        new_df = previous_df.drop(columns=["suburb"])  # Print print the cb's text
-        changed = True
-    else:
-        new_df = previous_df        
-        new_df["suburb"] = Thje_df["suburb"]
-
-def selectItems3():
-    global new_df, changed, previous_df
-    if  var3.get():  # If the button is checked,
-        previous_df = new_df        
-        new_df = previous_df.drop(columns=["postalCode"])  # Print print the cb's text
-        changed = True
-    else:
-        new_df = previous_df        
-        new_df["postalCode"] = Thje_df["postalCode"]
-
-def selectItems4():
-    global new_df, changed, previous_df
-    if  var4.get():  # If the button is checked,
-        previous_df = new_df        
-        new_df = previous_df.drop(columns=["sellPrice"])  # Print print the cb's text
-        changed = True
-    else:
-        new_df = previous_df        
-        new_df["sellPrice"] = Thje_df["sellPrice"]
-
-def selectItems5():
-    global new_df, changed, previous_df
-    if  var5.get():  # If the button is checked,
-        previous_df = new_df        
-        new_df = previous_df.drop(columns=["bed"])  # Print print the cb's text
-        changed = True
-    else:
-        new_df = previous_df        
-        new_df["bed"] = Thje_df["bed"]
-
-def selectItems6():
-    global new_df, changed, previous_df
-    if  var6.get():  # If the button is checked,
-        previous_df = new_df        
-        new_df = previous_df.drop(columns=["bath"])  # Print print the cb's text
-        changed = True
-    else:
-        new_df = previous_df        
-        new_df["bath"] = Thje_df["bath"]
-
-def selectItems7():
-    global new_df, changed, previous_df
-    if  var7.get():  # If the button is checked,
-        previous_df = new_df        
-        new_df = previous_df.drop(columns=["car"])  # Print print the cb's text
-        changed = True
-    else:
-        new_df = previous_df        
-        new_df["car"] = Thje_df["car"]
-
-def selectItems8():
-    global new_df, changed, previous_df
-    if  var8.get():  # If the button is checked,
-        previous_df = new_df        
-        new_df = previous_df.drop(columns=["propType"])  # Print print the cb's text
-        changed = True
-    else:
-        new_df = previous_df        
-        new_df["propType"] = Thje_df["propType"]
-
+    else:      
+        new_df[string] = Thje_df[string]
 def Table():
         global new_df, changed
         if changed != True:
@@ -114,9 +33,9 @@ def Table():
         print(new_df)  # Print print the cb's text
         time.sleep(5)
         os.system('cls')
-
-def Exit():
-    global root, text, new_df, Thje_df
+#For Bugtesting
+def Next_Step():
+    global root, text, new_df, Thje_df, Columns
     root.destroy()
     root = Tk()
     root.title("Bonus Measurements") #GUI name
@@ -178,112 +97,137 @@ def Exit():
     clicked2.set( "Default" ) 
     drop2 = OptionMenu( root , clicked2 , *Columns ) 
     drop2.pack() 
+    item9 = Button(root, text="Add",
+            command=Statistical_Command(clicked.get(), clicked2.get()))
+    item9.pack(anchor='w')
+    item10 = Button(root, text="Display",
+            command=Table)
+    item10.pack(anchor='w')
     root.mainloop()
+def Statistical_Command(var1,var2):
+    global Columns
+    if var1 == "Sell Price":
+        var1 == "sellPrice"
+    elif var1 == "Bedroom Count":
+        var1 == "bed"
+    elif var1 == "Bathroom Count":
+        var1 == "bath"
+    elif var1 == "Car Space Count":
+        var1 == "car"
+    if var1 == "All":
+        for var1 in Columns:
+          if var2 == "Mean":
+              Mean(var1)
+          elif var2 == "Median":
+              Median(var1)
+          elif var2 == "Highest Value":
+              Max(var1)
+          elif var2 == "Lowest Value":
+              min(var1)
+          elif var2 == "Range":
+              range(var1)
+          elif var2 == "Lower Quartile":
+              LQ(var1)
+          elif var2 == "Upper Quartile":
+              UQ(var1)
+          elif var2 == "Interquartile Range":
+              IQrange(var1)
+          elif var2 == "All":
+             All(var)
+    if var2 == "Mean":
+        Mean(var1)
+    elif var2 == "Median":
+        Median(var1)
+    elif var2 == "Highest Value":
+        Max(var1)
+    elif var2 == "Lowest Value":
+        min(var1)
+    elif var2 == "Range":
+        range(var1)
+    elif var2 == "Lower Quartile":
+        LQ(var1)
+    elif var2 == "Upper Quartile":
+        UQ(var1)
+    elif var2 == "Interquartile Range":
+        IQrange(var1)
+    elif var2 == "All":
+       All(var)
 def Mean(var):
-    global mean, new_df
-    if mean != True:
       new_df[f"{var} Mean"] = new_df[var].mean(skipna=True, numeric_only=True)
-      mean = True
       print(new_df)
-    else:
-        mean = False
 def Median(var):
-    global median, new_df
-    if median != True:
       new_df[f"{var} Median"] = new_df[var].median(skipna=True, numeric_only=True)
-      median = True
       print(new_df)
-    else:
-        median = False
 def Max(var):
-    global maxvar, new_df
-    if maxvar != True:
       new_df[f"{var} Maximum"] = new_df[var].max(skipna=True, numeric_only=True)
-      maxvar = True
       print(new_df)
-    else:
-        maxvar = False
 def Min(var):
-    global minvar, new_df
-    if minvar != True:
       new_df[f"{var} Minimum"] = new_df[var].min(skipna=True, numeric_only=True)
-      minvar = True
       print(new_df)
-    else:
-        minvar = False
 def LQ(var):
-    global lq, new_df
-    if lq != True:
       new_df[f"{var} Lower Quartile"] = new_df[var].quantile(q= 0.25, skipna=True, numeric_only=True)
-      lq = True
       print(new_df)
-    else:
-        lq = False
 def UQ(var):
-    global uq, new_df
-    if uq != True:
       new_df[f"{var} Upper Quartile"] = new_df[var].quantile(q= 0.75, skipna=True, numeric_only=True)
-      uq = True
       print(new_df)
-    else:
-        uq = False
-def range():
-    global Range, new_df
-    if Range != True:
+def range(var):
       new_df[F"{var} Range"] = new_df[var].max(skipna = True, numeric_only=True) - new_df[var].min(skipna = True, numeric_only=True)
       print(new_df)
-    else:
-        Range = False
-def IQrange():
-    global ir, new_df
-    if ir != True:
+def IQrange(var):
         new_df[F"{var} Interquartile Range"] = new_df[var].quantile(q=0.75, skipna = True, numeric_only = True)-new_df[var].quantile(q=0.25, skipna = True, numeric_only = True)
-    else:
-        ir = False
+def All(var):
+    Mean(var)
+    Median(var)
+    Max(var)
+    Min(var)
+    range(var)
+    LQ(var)
+    UQ(var)
+    IQrange(var)
 var = IntVar()  # variable class
 item1 = Checkbutton(root, text="Date",
-        variable=var, command=selectItems)
+        variable=var, command=selectItems(var,"Date"))
 item1.pack(anchor='w')
 
 
 var2 = IntVar()  # variable class
 item2 = Checkbutton(root, text="Suburb",
-        variable=var2, command=selectItems2)
+        variable=var2, command=selectItems(var2,"suburb"))
 item2.pack(anchor='w')
 
 var3 = IntVar()  # variable class
 item3 = Checkbutton(root, text="Postal Code",
-        variable=var3, command=selectItems3)
+        variable=var3, command=selectItems(var3,"postalCode"))
 item3.pack(anchor='w')
 
 var4 = IntVar()  # variable class
 item4 = Checkbutton(root, text="Sell Price",
-        variable=var4, command=selectItems4)
+        variable=var4, command=selectItems(var4,"sellPrice"))
 item4.pack(anchor='w')
 
 var5 = IntVar()  # variable class
 item5 = Checkbutton(root, text="Bedrooms",
-        variable=var5, command=selectItems5)
+        variable=var5, command=selectItems(var5,"bed"))
 item5.pack(anchor='w')
 
 var6 = IntVar()  # variable class
 item6 = Checkbutton(root, text="Bathrooms",
-        variable=var6, command=selectItems6)
+        variable=var6, command=selectItems(var6,"bath"))
 item6.pack(anchor='w')
 
 var7 = IntVar()  # variable class
 item7 = Checkbutton(root, text="Car Spaces",
-        variable=var7, command=selectItems7)
+        variable=var7, command=selectItems(var7,"car"))
 item7.pack(anchor='w')
 
 var8 = IntVar()  # variable class
 item8 = Checkbutton(root, text="Property Types",
-        variable=var8, command=selectItems8)
+        variable=var8, command=selectItems(var8,"propType"))
 item8.pack(anchor='w')
 
 itemd = Button(root, text="Display", command=Table)
 itemd.pack(anchor='w')
 
-iteme = Button(root, text="Exit", command=Exit)
+iteme = Button(root, text="Next Step", command=Next_Step)
 iteme.pack(anchor='w')
 root.mainloop()
