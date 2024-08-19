@@ -15,6 +15,10 @@ mean = False
 median = False
 maxvar = False
 minvar = False
+lq = False
+uq = False
+Range = False
+ir = False
 Thje_df = pd.read_csv('SydneyHousePrices.csv') #Defining the dataset
 Thje_df = Thje_df.drop(columns=['Id']) #Removing something useless.
 #Text Test
@@ -226,10 +230,16 @@ def UQ(var):
 def range():
     global Range, new_df
     if Range != True:
-      new_df
+      new_df[F"{var} Range"] = new_df[var].max(skipna = True, numeric_only=True) - new_df[var].min(skipna = True, numeric_only=True)
+      print(new_df)
+    else:
+        Range = False
 def IQrange():
-    None
-    
+    global ir, new_df
+    if ir != True:
+        new_df[F"{var} Interquartile Range"] = new_df[var].quantile(q=0.75, skipna = True, numeric_only = True)-new_df[var].quantile(q=0.25, skipna = True, numeric_only = True)
+    else:
+        ir = False
 var = IntVar()  # variable class
 item1 = Checkbutton(root, text="Date",
         variable=var, command=selectItems)
