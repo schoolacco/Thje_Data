@@ -20,13 +20,15 @@ text2 = Label(root, text="Check options to be removed from dataset.")
 text2.pack()
 new_df = Thje_df
 previous_df = new_df
+Columns_renamed = []
 def selectItems(var,string):
     global new_df, changed, previous_df
     if  var.get():  # If the button is checked,    
-        changed = previous_df = new_df
-        return new_df == previous_df.drop(columns=[string])  # Print print the cb's text
+        changed = True
+        previous_df = new_df
+        new_df = previous_df.drop(columns=[string])  # Print print the cb's text
     else:      
-       return new_df[string] == previous_df[string]
+       return new_df[string].equals(previous_df[string])
 def Table():
         global new_df, changed
         df_var = new_df
@@ -37,7 +39,7 @@ def Table():
         os.system('cls')
 #For Bugtesting
 def Next_Step():
-    global root, text, new_df, Thje_df, Columns
+    global root, text, new_df, Thje_df, Columns, Columns_renamed
     root.destroy()
     root = Tk()
     root.title("Bonus Measurements") #GUI name
@@ -69,24 +71,28 @@ def Next_Step():
     try:
       if Thje_df["sellPrice"].equals(new_df["sellPrice"]):
         Columns.append("Sell Price")
+        Columns_renamed.append("sellPrice")
         var0 = True
     except:
         None
     try:
       if Thje_df["bed"].equals(new_df["bed"]):
           Columns.append("Bedroom Count")
+          Columns_renamed.append("bed")
           var1 = True
     except:
         None
     try:
       if Thje_df["bath"].equals(new_df["bath"]):
         Columns.append("Bathroom Count")
+        Columns_renamed.append("bath")
         var2 = True
     except:
         None
     try:
       if Thje_df["car"].equals(new_df["car"]):
         Columns.append("Car Space Count")
+        Columns_renamed.append("car")
         var3 = True
     except:
         None
@@ -100,14 +106,15 @@ def Next_Step():
     drop2 = OptionMenu( root , clicked2 , *Columns ) 
     drop2.pack() 
     item9 = Button(root, text="Add",
-            command=Statistical_Command(clicked.get(), clicked2.get()))
+            command=lambda : Statistical_Command(clicked.get(), clicked2.get()))
     item9.pack(anchor='w')
     item10 = Button(root, text="Display",
             command=Table)
     item10.pack(anchor='w')
     root.mainloop()
 def Statistical_Command(var1,var2):
-    global Columns
+    global Columns, Columns_renamed
+    var1 = var1.get() if isinstance(var1, (StringVar, IntVar)) else var1
     if var1 == "Sell Price":
         var1 == "sellPrice"
     elif var1 == "Bedroom Count":
@@ -117,25 +124,25 @@ def Statistical_Command(var1,var2):
     elif var1 == "Car Space Count":
         var1 == "car"
     if var1 == "All":
-        for var1 in Columns:
+        for i in Columns_renamed:
           if var2 == "Mean":
-              Mean(var1)
+              Mean(i)
           elif var2 == "Median":
-              Median(var1)
+              Median(i)
           elif var2 == "Highest Value":
-              Max(var1)
+              Max(i)
           elif var2 == "Lowest Value":
-              min(var1)
+              min(i)
           elif var2 == "Range":
-              range(var1)
+              range(i)
           elif var2 == "Lower Quartile":
-              LQ(var1)
+              LQ(i)
           elif var2 == "Upper Quartile":
-              UQ(var1)
+              UQ(i)
           elif var2 == "Interquartile Range":
-              IQrange(var1)
+              IQrange(i)
           elif var2 == "All":
-             All(var)
+             All(i)
     if var2 == "Mean":
         Mean(var1)
     elif var2 == "Median":
@@ -172,19 +179,19 @@ def Min(var):
       print(new_df)
 def LQ(var):
       global new_df
-      new_df[f"{var} Lower Quartile"] = new_df[var].quantile(q= 0.25, skipna=True, numeric_only=True)
+      new_df[f"{var} Lower Quartile"] = new_df[var].quantile(q= 0.25)
       print(new_df)
 def UQ(var):
       global new_df
-      new_df[f"{var} Upper Quartile"] = new_df[var].quantile(q= 0.75, skipna=True, numeric_only=True)
+      new_df[f"{var} Upper Quartile"] = new_df[var].quantile(q= 0.75)
       print(new_df)
 def range(var):
       global new_df
-      new_df[F"{var} Range"] = new_df[var].max(skipna = True, numeric_only=True) - new_df[var].min(skipna = True, numeric_only=True)
+      new_df[f"{var} Range"] = new_df[var].max(skipna = True, numeric_only=True) - new_df[var].min(skipna = True, numeric_only=True)
       print(new_df)
 def IQrange(var):
         global new_df
-        new_df[F"{var} Interquartile Range"] = new_df[var].quantile(q=0.75, skipna = True, numeric_only = True)-new_df[var].quantile(q=0.25, skipna = True, numeric_only = True)
+        new_df[f"{var} Interquartile Range"] = new_df[var].quantile(q=0.75)-new_df[var].quantile(q=0.25)
 def All(var):
     Mean(var)
     Median(var)
