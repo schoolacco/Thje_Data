@@ -19,18 +19,20 @@ text.pack()
 text2 = Label(root, text="Check options to be removed from dataset.")
 text2.pack()
 new_df = Thje_df
+previous_df = new_df
 def selectItems(var,string):
-    global new_df, changed
+    global new_df, changed, previous_df
     if  var.get():  # If the button is checked,    
-        new_df = new_df.drop(columns=[string])  # Print print the cb's text
-        changed = True
+        changed = previous_df = new_df
+        return new_df == previous_df.drop(columns=[string])  # Print print the cb's text
     else:      
-        new_df[string] = Thje_df[string]
+       return new_df[string] == previous_df[string]
 def Table():
         global new_df, changed
+        df_var = new_df
         if changed != True:
-             new_df = Thje_df
-        print(new_df)  # Print print the cb's text
+             df_var = Thje_df
+        print(df_var)  # Print print the cb's text
         time.sleep(5)
         os.system('cls')
 #For Bugtesting
@@ -153,27 +155,35 @@ def Statistical_Command(var1,var2):
     elif var2 == "All":
        All(var)
 def Mean(var):
+      global new_df
       new_df[f"{var} Mean"] = new_df[var].mean(skipna=True, numeric_only=True)
       print(new_df)
 def Median(var):
+      global new_df
       new_df[f"{var} Median"] = new_df[var].median(skipna=True, numeric_only=True)
       print(new_df)
 def Max(var):
+      global new_df
       new_df[f"{var} Maximum"] = new_df[var].max(skipna=True, numeric_only=True)
       print(new_df)
 def Min(var):
+      global new_df
       new_df[f"{var} Minimum"] = new_df[var].min(skipna=True, numeric_only=True)
       print(new_df)
 def LQ(var):
+      global new_df
       new_df[f"{var} Lower Quartile"] = new_df[var].quantile(q= 0.25, skipna=True, numeric_only=True)
       print(new_df)
 def UQ(var):
+      global new_df
       new_df[f"{var} Upper Quartile"] = new_df[var].quantile(q= 0.75, skipna=True, numeric_only=True)
       print(new_df)
 def range(var):
+      global new_df
       new_df[F"{var} Range"] = new_df[var].max(skipna = True, numeric_only=True) - new_df[var].min(skipna = True, numeric_only=True)
       print(new_df)
 def IQrange(var):
+        global new_df
         new_df[F"{var} Interquartile Range"] = new_df[var].quantile(q=0.75, skipna = True, numeric_only = True)-new_df[var].quantile(q=0.25, skipna = True, numeric_only = True)
 def All(var):
     Mean(var)
