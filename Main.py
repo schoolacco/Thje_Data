@@ -111,7 +111,14 @@ def Next_Step():
     item10 = Button(root, text="Display",
             command=Table)
     item10.pack(anchor='w')
+    item11 = Button(root, text="Graphing Step", command=Exit2)
+    item11.pack(anchor='w')
     root.mainloop()
+def Exit2():
+    root.destroy()
+    Final_Step()
+def Final_Step():
+    None
 def Statistical_Command(var1,var2):
     global Columns, Columns_renamed
     var1 = var1.get() if isinstance(var1, (StringVar, IntVar)) else var1
@@ -164,6 +171,7 @@ def Statistical_Command(var1,var2):
          All(var)
     except:
         None
+        print("An error occured, don't worry, this seems to be normal.")
 def Mean(var):
       global new_df
       new_df[f"{var} Mean"] = new_df[var].mean(skipna=True, numeric_only=True)
