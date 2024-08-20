@@ -115,52 +115,55 @@ def Next_Step():
 def Statistical_Command(var1,var2):
     global Columns, Columns_renamed
     var1 = var1.get() if isinstance(var1, (StringVar, IntVar)) else var1
-    if var1 == "Sell Price":
-        var1 == "sellPrice"
-    elif var1 == "Bedroom Count":
-        var1 == "bed"
-    elif var1 == "Bathroom Count":
-        var1 == "bath"
-    elif var1 == "Car Space Count":
-        var1 == "car"
-    if var1 == "All":
-        for i in Columns_renamed:
-          if var2 == "Mean":
-              Mean(i)
-          elif var2 == "Median":
-              Median(i)
-          elif var2 == "Highest Value":
-              Max(i)
-          elif var2 == "Lowest Value":
-              min(i)
-          elif var2 == "Range":
-              range(i)
-          elif var2 == "Lower Quartile":
-              LQ(i)
-          elif var2 == "Upper Quartile":
-              UQ(i)
-          elif var2 == "Interquartile Range":
-              IQrange(i)
-          elif var2 == "All":
-             All(i)
-    if var2 == "Mean":
-        Mean(var1)
-    elif var2 == "Median":
-        Median(var1)
-    elif var2 == "Highest Value":
-        Max(var1)
-    elif var2 == "Lowest Value":
-        min(var1)
-    elif var2 == "Range":
-        range(var1)
-    elif var2 == "Lower Quartile":
-        LQ(var1)
-    elif var2 == "Upper Quartile":
-        UQ(var1)
-    elif var2 == "Interquartile Range":
-        IQrange(var1)
-    elif var2 == "All":
-       All(var)
+    try:
+      if var1 == "Sell Price":
+          var1 == "sellPrice"
+      elif var1 == "Bedroom Count":
+          var1 == "bed"
+      elif var1 == "Bathroom Count":
+          var1 == "bath"
+      elif var1 == "Car Space Count":
+          var1 == "car"
+      if var1 == "All":
+          for i in Columns_renamed:
+            if var2 == "Mean":
+                Mean(i)
+            elif var2 == "Median":
+                Median(i)
+            elif var2 == "Highest Value":
+                Max(i)
+            elif var2 == "Lowest Value":
+                min(i)
+            elif var2 == "Range":
+                range(i)
+            elif var2 == "Lower Quartile":
+                LQ(i)
+            elif var2 == "Upper Quartile":
+                UQ(i)
+            elif var2 == "Interquartile Range":
+                IQrange(i)
+            elif var2 == "All":
+               All(i)
+      if var2 == "Mean":
+          Mean(var1)
+      elif var2 == "Median":
+          Median(var1)
+      elif var2 == "Highest Value":
+          Max(var1)
+      elif var2 == "Lowest Value":
+          min(var1)
+      elif var2 == "Range":
+          range(var1)
+      elif var2 == "Lower Quartile":
+          LQ(var1)
+      elif var2 == "Upper Quartile":
+          UQ(var1)
+      elif var2 == "Interquartile Range":
+          IQrange(var1)
+      elif var2 == "All":
+         All(var)
+    except:
+        None
 def Mean(var):
       global new_df
       new_df[f"{var} Mean"] = new_df[var].mean(skipna=True, numeric_only=True)
