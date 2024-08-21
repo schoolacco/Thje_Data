@@ -3,21 +3,20 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import time
 import os
-os.system('cls')
-root = Tk()
-root.title("Sydney House Inflation") #GUI name
+os.system('cls') #Clearing the terminal
+root = Tk() #Defining the GUI
+root.title("Sydney House Prices Inflation") #GUI name
 root.configure(background= "white") #Background colour
-root.maxsize(10000,10000)
-root.minsize(500,500)
+root.maxsize(10000,10000) #Max GUI size
+root.minsize(500,500) #Min GUI size
 root.geometry("500x500+20+100")
-changed = False
+changed = False #For the display function
 Thje_df = pd.read_csv('SydneyHousePrices.csv') #Defining the dataset
 Thje_df = Thje_df.drop(columns=['Id']) #Removing something useless.
-#Text Test
-text = Label(root, text="STEP 1:") 
-text.pack()
-text2 = Label(root, text="Check options to be removed from dataset.")
-text2.pack()
+text = Label(root, text="STEP 1:")  #Text within the GUI
+text.pack() #Add it
+text2 = Label(root, text="Check options to be removed from dataset.") #Instructions
+text2.pack() #Add it
 new_df = Thje_df
 previous_df = new_df
 Columns_renamed = []
@@ -115,10 +114,23 @@ def Next_Step():
     item11.pack(anchor='w')
     root.mainloop()
 def Exit2():
+    global root
     root.destroy()
     Final_Step()
 def Final_Step():
-    None
+    global root
+    root = Tk()
+    root.title("Graphing")
+    root.configure(background = "white")
+    root.maxsize(10000,10000)
+    root.minsize(500,500)
+    root.geometry("500x500+20+20")
+    text = Label(root, text="STEP 3")
+    text.pack()
+    text2 = Label(root, text2="Choose type of graph and aesthetic options.")
+    text2.pack()
+    clicked = StringVar()
+    clicked.set("Column")
 def Statistical_Command(var1,var2):
     global Columns, Columns_renamed
     var1 = var1.get() if isinstance(var1, (StringVar, IntVar)) else var1
@@ -170,7 +182,6 @@ def Statistical_Command(var1,var2):
       elif var2 == "All":
          All(var)
     except:
-        None
         print("An error occured, don't worry, this seems to be normal.")
 def Mean(var):
       global new_df
@@ -212,6 +223,7 @@ def All(var):
     LQ(var)
     UQ(var)
     IQrange(var)
+
 var = IntVar()  # variable class
 item1 = Checkbutton(root, text="Date",
         variable=var, command=selectItems(var,"Date"))
