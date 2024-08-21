@@ -4,6 +4,22 @@ import matplotlib.pyplot as plt
 import time
 import os
 os.system('cls') #Clearing the terminal
+var = None
+var2 = None
+var3 = None
+var4 = None
+var5 = None
+var6 = None
+var7 = None
+var8 = None
+item1 = None
+item2 = None
+item3 = None
+item4 = None
+item5 = None
+item6 = None
+item7 = None
+item8 = None
 root = Tk() #Defining the GUI
 root.title("Sydney House Prices Inflation") #GUI name
 root.configure(background= "white") #Background colour
@@ -21,19 +37,17 @@ new_df = Thje_df
 previous_df = new_df
 Columns_renamed = []
 def selectItems(var,string):
-    global new_df, changed, previous_df
+    global new_df, changed, previous_df, Thje_df
     if  var.get():  # If the button is checked,    
         changed = True
-        previous_df = new_df
-        new_df = previous_df.drop(columns=[string])  # Print print the cb's text
+        previous_df = new_df.copy()
+        new_df = new_df.drop(columns=[string])  # Print print the cb's text
+        print(f"{string} should've been removed")
     else:      
-       return new_df[string].equals(previous_df[string])
+       new_df[string] = Thje_df[string]
 def Table():
-        global new_df, changed
-        df_var = new_df
-        if changed != True:
-             df_var = Thje_df
-        print(df_var)  # Print print the cb's text
+        global new_df
+        print(new_df)  # Print print the cb's text
         time.sleep(5)
         os.system('cls')
 #For Bugtesting
@@ -105,7 +119,7 @@ def Next_Step():
     drop2 = OptionMenu( root , clicked2 , *Columns ) 
     drop2.pack() 
     item9 = Button(root, text="Add",
-            command=lambda : Statistical_Command(clicked.get(), clicked2.get()))
+            command=lambda : Statistical_Command(clicked2.get(), clicked.get()))
     item9.pack(anchor='w')
     item10 = Button(root, text="Display",
             command=Table)
@@ -137,35 +151,26 @@ def Final_Step():
 def Statistical_Command(var1,var2):
     global Columns, Columns_renamed
     var1 = var1.get() if isinstance(var1, (StringVar, IntVar)) else var1
+    var2 = var2.get() if isinstance(var2, (StringVar, IntVar)) else var2
+    column_map = {
+        "Sell Price": "sellPrice",
+        "Bedroom Count": "bed",
+        "Bathroom Count": "bath",
+        "Car Space Count": "car",
+        "All": "All"
+    }
+    var1 = column_map.get(var1, var1)
     try:
-      if var1 == "Sell Price":
-          var1 == "sellPrice"
-      elif var1 == "Bedroom Count":
-          var1 == "bed"
-      elif var1 == "Bathroom Count":
-          var1 == "bath"
-      elif var1 == "Car Space Count":
-          var1 == "car"
       if var1 == "All":
           for i in Columns_renamed:
-            if var2 == "Mean":
-                Mean(i)
-            elif var2 == "Median":
-                Median(i)
-            elif var2 == "Highest Value":
-                Max(i)
-            elif var2 == "Lowest Value":
-                min(i)
-            elif var2 == "Range":
-                range(i)
-            elif var2 == "Lower Quartile":
-                LQ(i)
-            elif var2 == "Upper Quartile":
-                UQ(i)
-            elif var2 == "Interquartile Range":
-                IQrange(i)
-            elif var2 == "All":
-               All(i)
+           Stats(i,var2)
+      else:
+        Stats(var1, var2)          
+      print(var1, var2)
+
+    except():
+        print("Error")
+def Stats(var1, var2):
       if var2 == "Mean":
           Mean(var1)
       elif var2 == "Median":
@@ -183,9 +188,7 @@ def Statistical_Command(var1,var2):
       elif var2 == "Interquartile Range":
           IQrange(var1)
       elif var2 == "All":
-         All(var)
-    except:
-        print("An error occured, don't worry, this seems to be normal.")
+         All(var1)
 def Mean(var):
       global new_df
       new_df[f"{var} Mean"] = new_df[var].mean(skipna=True, numeric_only=True)
@@ -227,47 +230,20 @@ def All(var):
     UQ(var)
     IQrange(var)
 
-var = IntVar()  # variable class
-item1 = Checkbutton(root, text="Date",
-        variable=var, command=selectItems(var,"Date"))
-item1.pack(anchor='w')
-
-
-var2 = IntVar()  # variable class
-item2 = Checkbutton(root, text="Suburb",
-        variable=var2, command=selectItems(var2,"suburb"))
-item2.pack(anchor='w')
-
-var3 = IntVar()  # variable class
-item3 = Checkbutton(root, text="Postal Code",
-        variable=var3, command=selectItems(var3,"postalCode"))
-item3.pack(anchor='w')
-
-var4 = IntVar()  # variable class
-item4 = Checkbutton(root, text="Sell Price",
-        variable=var4, command=selectItems(var4,"sellPrice"))
-item4.pack(anchor='w')
-
-var5 = IntVar()  # variable class
-item5 = Checkbutton(root, text="Bedrooms",
-        variable=var5, command=selectItems(var5,"bed"))
-item5.pack(anchor='w')
-
-var6 = IntVar()  # variable class
-item6 = Checkbutton(root, text="Bathrooms",
-        variable=var6, command=selectItems(var6,"bath"))
-item6.pack(anchor='w')
-
-var7 = IntVar()  # variable class
-item7 = Checkbutton(root, text="Car Spaces",
-        variable=var7, command=selectItems(var7,"car"))
-item7.pack(anchor='w')
-
-var8 = IntVar()  # variable class
-item8 = Checkbutton(root, text="Property Types",
-        variable=var8, command=selectItems(var8,"propType"))
-item8.pack(anchor='w')
-
+def Checkbuttons(var,item,string,string2):
+    global root
+    var = IntVar()  # variable class
+    item = Checkbutton(root, text=string,
+        variable=var, command=lambda: selectItems(var,string2))
+    item.pack(anchor='w')
+Checkbuttons(var,item1,"Date", "Date")
+Checkbuttons(var2, item2, "Suburb", "suburb")
+Checkbuttons(var3, item3, "Postal Code", "postalCode")
+Checkbuttons(var4, item4, "Sell Price", "sellPrice")
+Checkbuttons(var5, item5, "Bedrooms", "bed")
+Checkbuttons(var6, item6, "Bathrooms", "bath")
+Checkbuttons(var7, item7, "Car Spaces", "car")
+Checkbuttons(var8, item8, "Property Types", "propType")
 itemd = Button(root, text="Display", command=Table)
 itemd.pack(anchor='w')
 
