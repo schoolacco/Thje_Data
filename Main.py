@@ -314,158 +314,61 @@ itemd.pack(anchor='w')
 
 iteme = Button(root, text="Next Step", command= Forgor_step)
 iteme.pack(anchor='w')
-def Graph(t,x,y,z,y2,yerr):
-    print('I don'+'t have any idea why it crashes, but I can'+'t find a way to fix it')
-    global new_df,root
-    x = new_df[x]
-    y = new_df[y]    
-    if t == "Table":
-        root.destroy()
-        root = Tk()
-        root.title("Your data frame...")
-        Label(root, text=new_df).pack()
 
+def Graph(t, x, y, z, y2, yerr):
+    global new_df, root
     try:
-      if t == "Bar":
-       fig, ax = plt.subplots()
-       ax.bar(x, y, width=1, edgecolor="white", linewidth=0.7)
-       ax.set(xlim=(0, 8), xticks=np.arange(1, 8),
-         ylim=(0, 8), yticks=np.arange(1, 8))
-  
-       plt.show()
-      elif t == 'Plot':
-          fig, ax = plt.subplots()
-          
-          ax.plot(x, y, linewidth=2.0)
-          
-          ax.set(xlim=(0, 8), xticks=np.arange(1, 8),
-                 ylim=(0, 8), yticks=np.arange(1, 8))
-          
-          plt.show()
-      elif t == "Scatter":
-          fig, ax = plt.subplots()
-          sizes = np.random.uniform(15, 80, len(x))
-          colors = np.random.uniform(15, 80, len(x))
-          ax.scatter(x, y, s=sizes, c=colors, vmin=0, vmax=100)
-          
-          ax.set(xlim=(0, 8), xticks=np.arange(1, 8),
-                 ylim=(0, 8), yticks=np.arange(1, 8))
-          
-          plt.show()
-      elif t == "Stem":
-          fig, ax = plt.subplots()
-          
-          ax.stem(x, y)
-          
-          ax.set(xlim=(0, 8), xticks=np.arange(1, 8),
-                 ylim=(0, 8), yticks=np.arange(1, 8))
-          
-          plt.show()
-      elif t == "Step":
-          fig, ax = plt.subplots()
-          
-          ax.step(x, y, linewidth=2.5)
-          
-          ax.set(xlim=(0, 8), xticks=np.arange(1, 8),
-                 ylim=(0, 8), yticks=np.arange(1, 8))
-          
-          plt.show()
-      elif t == 'Fill_Between':
-          fig, ax = plt.subplots()
-          y1 = y
-          ax.fill_between(x, y1, y2, alpha=.5, linewidth=0)
-          ax.plot(x, (y1 + y2)/2, linewidth=2)
-          
-          ax.set(xlim=(0, 8), xticks=np.arange(1, 8),
-                 ylim=(0, 8), yticks=np.arange(1, 8))
-  
-          plt.show()
-      elif t == 'StackPlot':
-          fig, ax = plt.subplots()
-  
-          ax.stackplot(x, y)
-          
-          ax.set(xlim=(0, 8), xticks=np.arange(1, 8),
-                 ylim=(0, 8), yticks=np.arange(1, 8))
-          
-          plt.show()
-      elif t == 'Hist' and np.array_equal(new_df.x, new_df.x.astype(int)):
-          fig, ax = plt.subplots()
-  
-          ax.hist(x, bins=8, linewidth=0.5, edgecolor="white")
-          
-          ax.set(xlim=(0, 8), xticks=np.arange(1, 8),
-                 ylim=(0, 56), yticks=np.linspace(0, 56, 9))
-          
-          plt.show()
-      elif t == 'BoxPlot' and np.array_equal(new_df.x, new_df.x.astype(int)):
-          VP = ax.boxplot(x, positions=[2, 4, 6], widths=1.5, patch_artist=True,
-                  showmeans=False, showfliers=False,
-                  medianprops={"color": "white", "linewidth": 0.5},
-                  boxprops={"facecolor": "C0", "edgecolor": "white",
-                            "linewidth": 0.5},
-                  whiskerprops={"color": "C0", "linewidth": 1.5},
-                  capprops={"color": "C0", "linewidth": 1.5})
-  
-          ax.set(xlim=(0, 8), xticks=np.arange(1, 8),
-          ylim=(0, 8), yticks=np.arange(1, 8))
-          plt.show()
-      elif t == 'Errorbar' and yerr.is_integer():
+        x_data = new_df[x]
+        y_data = new_df[y]
+
+        if t == "Table":
+            root.destroy()
+            root = Tk()
+            root.title("Your data frame...")
+            Label(root, text=new_df).pack()
+            return
+
         fig, ax = plt.subplots()
-  
-        ax.errorbar(x, y, yerr, fmt='o', linewidth=2, capsize=6)
-  
-        ax.set(xlim=(0, 8), xticks=np.arange(1, 8),
-        ylim=(0, 8), yticks=np.arange(1, 8))
-  
+        if t == "Bar":
+            ax.bar(x_data, y_data, width=1, edgecolor="white", linewidth=0.7)
+        elif t == 'Plot':
+            ax.plot(x_data, y_data, linewidth=2.0)
+        elif t == "Scatter":
+            sizes = np.random.uniform(15, 80, len(x_data))
+            colors = np.random.uniform(15, 80, len(x_data))
+            ax.scatter(x_data, y_data, s=sizes, c=colors, vmin=0, vmax=100)
+        elif t == "Stem":
+            ax.stem(x_data, y_data)
+        elif t == "Step":
+            ax.step(x_data, y_data, linewidth=2.5)
+        elif t == 'Fill_Between':
+            y1 = y_data
+            ax.fill_between(x_data, y1, y2, alpha=.5, linewidth=0)
+            ax.plot(x_data, (y1 + y2) / 2, linewidth=2)
+        elif t == 'StackPlot':
+            ax.stackplot(x_data, y_data)
+        elif t == 'Hist':
+            ax.hist(x_data, bins=8, linewidth=0.5, edgecolor="white")
+        elif t == 'BoxPlot':
+            ax.boxplot(x_data, positions=[2, 4, 6], widths=1.5, patch_artist=True)
+        elif t == 'Errorbar':
+            if not np.issubdtype(type(yerr), np.number):
+                raise ValueError("Invalid value for yerr")
+            ax.errorbar(x_data, y_data, yerr, fmt='o', linewidth=2, capsize=6)
+        elif t == 'ViolinPlot':
+            ax.violinplot(x_data)
+        elif t == "Eventplot":
+            ax.eventplot(x_data, orientation="vertical")
+        elif t == 'Hist2d':
+            ax.hist2d(x_data, y_data, bins=(np.arange(-3, 3, 0.1), np.arange(-3, 3, 0.1)))
+        elif t == 'HexBin':
+            ax.hexbin(x_data, y_data, gridsize=20)
+        elif t == 'Pie':
+            colors = plt.get_cmap('Blues')(np.linspace(0.2, 0.7, len(x_data)))
+            ax.pie(x_data, colors=colors, radius=3, center=(4, 4))
+        else:
+            print(f"Unknown plot type: {t}")
         plt.show()
-      elif t == 'ViolinPlot' and np.array_equal(new_df.x, new_df.x.astype(int)):
-          fig, ax = plt.subplots()
-          
-          vp = ax.violinplot(x, [2, 4, 6], widths=2,
-                             showmeans=False, showmedians=False, showextrema=False)
-          # styling:
-          for body in vp['bodies']:
-              body.set_alpha(0.9)
-          ax.set(xlim=(0, 8), xticks=np.arange(1, 8),
-                 ylim=(0, 8), yticks=np.arange(1, 8))
-          
-          plt.show()
-      elif t == "Eventplot" and np.array_equal(new_df.x, new_df.x.astype(int)):
-          fig, ax = plt.subplots()
-
-          ax.eventplot(x, orientation="vertical", lineoffsets=x, linewidth=0.75)
-          
-          ax.set(xlim=(0, 8), xticks=np.arange(1, 8),
-                 ylim=(0, 8), yticks=np.arange(1, 8))
-          
-          plt.show()
-      elif t == 'Hist2d' and np.array_equal(new_df.x, new_df.x.astype(int)) and np.array_equal(new_df.y, new_df.y.astype(int)):
-          fig, ax = plt.subplots()
-          
-          ax.hist2d(x, y, bins=(np.arange(-3, 3, 0.1), np.arange(-3, 3, 0.1)))
-          
-          ax.set(xlim=(-2, 2), ylim=(-3, 3))
-          
-          plt.show()
-      elif t == 'HexBin' and np.array_equal(new_df.x, new_df.x.astype(int)) and np.array_equal(new_df.y, new_df.y.astype(int)):
-          fig, ax = plt.subplots()
-
-          ax.hexbin(x, y, gridsize=20)
-          
-          ax.set(xlim=(-2, 2), ylim=(-3, 3))
-          
-          plt.show()
-      elif t == 'Pie':
-          colors = plt.get_cmap('Blues')(np.linspace(0.2, 0.7, len(x)))
-          fig, ax = plt.subplots()
-          ax.pie(x, colors=colors, radius=3, center=(4, 4),
-                 wedgeprops={"linewidth": 1, "edgecolor": "white"}, frame=True)
-          
-          ax.set(xlim=(0, 8), xticks=np.arange(1, 8),
-                 ylim=(0, 8), yticks=np.arange(1, 8))
-          
-          plt.show()
     except:
-        print("Sorry... you either entered in an invalid value for the type of graph or maybe the graph itself was never valid.")
+        print("An error occured.")
 root.mainloop()
