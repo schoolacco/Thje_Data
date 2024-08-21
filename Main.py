@@ -176,7 +176,7 @@ def Final_Step():
     graphs = [
         "Plot", "Scatter", "Bar", "Stem", "Step", "Fill_Between", "StackPlot",
         "Hist", "BoxPlot", "Errorbar", "ViolinPlot", "Eventplot", "Hist2d",
-        "HexBin", "Pie"
+        "HexBin", "Pie", "Table"
     ]
     columns = new_df.columns.tolist()
     
@@ -316,9 +316,15 @@ iteme = Button(root, text="Next Step", command= Forgor_step)
 iteme.pack(anchor='w')
 def Graph(t,x,y,z,y2,yerr):
     print('I don'+'t have any idea why it crashes, but I can'+'t find a way to fix it')
-    global new_df
+    global new_df,root
     x = new_df[x]
     y = new_df[y]    
+    if t == "Table":
+        root.destroy()
+        root = Tk()
+        root.title("Your data frame...")
+        Label(root, text=new_df).pack()
+
     try:
       if t == "Bar":
        fig, ax = plt.subplots()
