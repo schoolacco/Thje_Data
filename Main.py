@@ -68,8 +68,17 @@ def Forgor_step():
     root.geometry("500x500+20+100")
     text = Label(root, text="STEP 1.5:") 
     text.pack()
-    text2 = Label(root, text="More Filtering")
+    text2 = Label(root, text="More Filtering, only Date due to inconveince in filtering everything else.")
     text2.pack()
+    clicked = StringVar()
+    clicked.set('2019')
+    Dates = ['2000','2001','2002','2003','2004','2005','2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018','2019']
+    Date_drop = OptionMenu(root, clicked, *Dates)
+    Date_drop.pack()
+    Button(root, text = 'Filter by Date', command = lambda: Datefilter(clicked)).pack()
+def Datefilter(clicked):
+  new_df.loc[f'{clicked.get()}-01-01':f'{clicked.get()}-12-31']
+  Next_Step()
 def Next_Step():
     global root, text, new_df, Thje_df, Columns, Columns_renamed
     root.destroy()
@@ -151,64 +160,59 @@ def Exit2():
     root.destroy()
     Final_Step()
 def Final_Step():
-    global root, inputtxt, INPUT
+    global root, inputtxt
     root = Tk()
     root.title("Graphing")
-    root.configure(background = "white")
-    root.maxsize(10000,10000)
-    root.minsize(500,500)
+    root.configure(background="white")
+    root.maxsize(10000, 10000)
+    root.minsize(500, 500)
     root.geometry("500x500+20+20")
+
     text = Label(root, text="STEP 3")
     text.pack()
     text2 = Label(root, text="Choose type of graph and aesthetic options.")
     text2.pack()
+
+    graphs = [
+        "Plot", "Scatter", "Bar", "Stem", "Step", "Fill_Between", "StackPlot",
+        "Hist", "BoxPlot", "Errorbar", "ViolinPlot", "Eventplot", "Hist2d",
+        "HexBin", "Pie"
+    ]
+    columns = new_df.columns.tolist()
+    
     clicked = StringVar()
-    clicked.set("(Placeholder)")
+    clicked.set("Plot")
     clicked2 = StringVar()
-    clicked2.set("(Placeholder)")
+    clicked2.set(columns[0])
     clicked3 = StringVar()
-    clicked3.set("(Placeholder)")
+    clicked3.set(columns[0])
     clicked4 = StringVar()
-    clicked4.set("(Placeholder)")
+    clicked4.set(columns[0])
     clicked5 = StringVar()
-    clicked5.set("(Placeholder)")
-    graphs = ["Plot", "Scatter", "Bar", "Stem", "Step", "Fill_Between", "StackPlot", "Hist", "BoxPlot", "Errorbar", "ViolinPlot", "Eventplot", "Hist2d", "HexBin", "Pie"]
-    x_options = new_df.head()
-    y_options = new_df.head()
-    z_options = new_df.head()
-    text4 = Label(root, text="Graph Type")
-    text4.pack()
-    drop = OptionMenu(root, clicked, *graphs)
-    drop.pack()
-    text5 = Label(root, text="X value")
-    text5.pack()
-    drop2 = OptionMenu(root, clicked2, *x_options)
-    drop2.pack()
-    text6 = Label(root, text="Y Value")
-    text6.pack()
-    drop3 = OptionMenu(root,clicked3, *y_options)
-    drop3.pack()
-    text7 = Label(root, text="Z Value (for 3D, never implemented)")
-    text7.pack()
-    drop4 = OptionMenu(root, clicked4, *z_options)
-    drop4.pack()
-    text8 = Label(root, text="Extra y value for some graphs")
-    text8.pack()
-    drop5 = OptionMenu(root,clicked5, *y_options)
-    drop5.pack()
+    clicked5.set(columns[0])
+
+    Label(root, text="Graph Type").pack()
+    OptionMenu(root, clicked, *graphs).pack()
+
+    Label(root, text="X value").pack()
+    OptionMenu(root, clicked2, *columns).pack()
+
+    Label(root, text="Y Value").pack()
+    OptionMenu(root, clicked3, *columns).pack()
+
+    Label(root, text="Z Value (for 3D)").pack()
+    OptionMenu(root, clicked4, *columns).pack()
+
+    Label(root, text="Extra y value for some graphs").pack()
+    OptionMenu(root, clicked5, *columns).pack()
+
     text3 = Label(root, text="Note that only the first 2 are of use unless you plan on using a more particular graph.")
     text3.pack()
-    Label(text = "What is 24 * 5 ? ").pack()
-    inputtxt = Text(root, height = 10,
-                width = 25,
-                bg = "light yellow")
+
+    inputtxt = Text(root, height=10, width=25, bg="light yellow")
     inputtxt.pack()
-    try:
-        var = int(Take_input())
-    except:
-        var = None
-    Thatisit = Button(root, text = 'Graph', command = lambda: Graph(clicked.get(), clicked2.get(), clicked3.get(), clicked4.get(), clicked5.get(), var))
-    Thatisit.pack(anchor='w')
+    yerr = Take_input()
+    Button(root, text='Graph', command=lambda: Graph(clicked.get(), clicked2.get(), clicked3.get(), clicked4.get(), clicked5.get(), yerr)).pack(anchor='w')
 def Statistical_Command(var1,var2):
     global Columns, Columns_renamed
     var1 = var1.get() if isinstance(var1, (StringVar, IntVar)) else var1
@@ -311,6 +315,7 @@ itemd.pack(anchor='w')
 iteme = Button(root, text="Next Step", command= Forgor_step)
 iteme.pack(anchor='w')
 def Graph(t,x,y,z,y2,yerr):
+    print('I don'+'t have any idea why it crashes, but I can'+'t find a way to fix it')
     global new_df
     x = new_df[x]
     y = new_df[y]    
