@@ -127,10 +127,13 @@ def Final_Step():
     root.geometry("500x500+20+20")
     text = Label(root, text="STEP 3")
     text.pack()
-    text2 = Label(root, text2="Choose type of graph and aesthetic options.")
+    text2 = Label(root, text="Choose type of graph and aesthetic options.")
     text2.pack()
     clicked = StringVar()
-    clicked.set("Column")
+    clicked.set("(Placeholder)")
+    graphs = ["Plot", "Scatter", "Bar", "Stem", "Step", "Fill_Between", "StackPlot", "ImShow", "PcolorMesh", "Contour", "Contourf", "Barbs", "Quiver", "Streamplot", "Hist", "BoxPlot", "Errorbar", "ViolinPlot", "Eventplot", "Hist2d", "HexBin", "Pie", "Tricontour", "Tricontourf", "Tripcolor", "Triplot", "3D ScatterPlot", "3D Surface", "Triangular 3D Surfaces", "Volumetric", "3D wireframe"]
+    drop = OptionMenu(root, clicked, *graphs)
+    drop.pack()
 def Statistical_Command(var1,var2):
     global Columns, Columns_renamed
     var1 = var1.get() if isinstance(var1, (StringVar, IntVar)) else var1
