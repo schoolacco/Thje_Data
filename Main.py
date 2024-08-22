@@ -61,17 +61,41 @@ def Forgor_step():
     root.geometry("500x500+20+100")
     text = Label(root, text="STEP 1.5:") #Step count
     text.pack()
-    text2 = Label(root, text="More Filtering, only Date due to inconveince in filtering everything else.") #Subject to change
+    text2 = Label(root, text="More Filtering.") #Subject to change
     text2.pack()
     clicked = StringVar() #Reasons
-    clicked.set('2019') #Default
+    clicked.set('Default') #Default
+    clicked2 = StringVar() #Reasons
+    clicked2.set('Default') #Default
+    clicked3 = StringVar() #Reasons
+    clicked3.set('Default') #Default
     Dates = ['2000','2001','2002','2003','2004','2005','2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018','2019'] #A list
     Date_drop = OptionMenu(root, clicked, *Dates) #Creating an option Menu
     Date_drop.pack()
+    variable = list(new_df["propType"].drop_duplicates())
+    OptionMenu(root,clicked2, *variable).pack()
+    variable2 = list(new_df["suburb"].drop_duplicates())
+    OptionMenu(root,clicked3, *variable2).pack()
+    # append the list to the final list
     Button(root, text = 'Filter by Date', command = lambda: Datefilter(clicked)).pack() #The Button for the filter, lambda is a requirement for more complex functions for some reason...
+    Button(root, text = 'Filter by Property Type', command = lambda: Filter(clicked2, "propType")).pack()
+    Button(root, text = 'Filter by Suburb', command = lambda: Filter(clicked3, "suburb")).pack()
+    Button(root, text = 'Next Step', command = Next_Step).pack()
+    Button(root, text = 'Display', command = Table).pack()
 def Datefilter(clicked):
-  new_df.loc[f'{clicked.get()}-01-01':f'{clicked.get()}-12-31'] #Remove all dates but those within the given year.
-  Next_Step() #Continue, subject to removal
+  global previous_df, new_df
+  previous_df=new_df
+  try:
+    new_df.loc[f'{clicked.get()}-01-01':f'{clicked.get()}-12-31'] #Remove all dates but those within the given year.
+  except:
+      new_df = previous_df
+def Filter(clicked,Type):
+  global new_df, previous_df
+  previous_df = new_df
+  try:
+    new_df = new_df.drop(new_df[new_df[Type] != clicked.get()].index)
+  except:
+      new_df = previous_df
 def Next_Step():
     global root, text, new_df, Thje_df, Columns, Columns_renamed
     root.destroy() #Destroy the GUI
