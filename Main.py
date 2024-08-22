@@ -5,23 +5,16 @@ import time
 import os
 import numpy as np
 plt.style.use('_mpl-gallery')
-os.system('cls') #Clearing the terminal
-var = None
-var2 = None
-var3 = None
-var4 = None
-var5 = None
-var6 = None
-var7 = None
-var8 = None
-item1 = None
-item2 = None
-item3 = None
-item4 = None
-item5 = None
-item6 = None
-item7 = None
-item8 = None
+try:
+  os.system('cls') #Clearing the terminal
+except:
+    None
+try:
+    os.system('clear') #If not Windows
+except:
+    None
+# Define all the below variables as None
+var = var2 = var3 = var4 = var5 = var6 = var7 = var8 = item1 = item2 = item3 = item4 = item5 = item6 = item7 = item8 = None
 root = Tk() #Defining the GUI
 root.title("Sydney House Prices Inflation") #GUI name
 root.configure(background= "white") #Background colour
@@ -35,60 +28,60 @@ text = Label(root, text="STEP 1:")  #Text within the GUI
 text.pack() #Add it
 text2 = Label(root, text="Check options to be removed from dataset.") #Instructions
 text2.pack() #Add it
-new_df = Thje_df
-previous_df = new_df
-Columns_renamed = []
-def Take_input():
+new_df = Thje_df #Quick definiton
+previous_df = new_df #For reasons
+Columns_renamed = [] #Setting up for later
+def Take_input(): 
     global inputtxt
-    INPUT = inputtxt.get("1.0", "end-1c")
-    return INPUT
+    INPUT = inputtxt.get("1.0", "end-1c") #This is how you recieve an input via tkinter
+    return INPUT #Return it of course
 def selectItems(var,string):
     global new_df, changed, previous_df, Thje_df
     if  var.get():  # If the button is checked,    
-        changed = True
-        previous_df = new_df.copy()
-        new_df = new_df.drop(columns=[string])  # Print print the cb's text
-        print(f"{string} should've been removed")
+        changed = True #No longer needed, but I'm lazy
+        previous_df = new_df.copy() #Just in case
+        new_df = new_df.drop(columns=[string])  # Remove the column
+        print(f"{string} should've been removed") #Debugging
     else:      
-       new_df[string] = Thje_df[string]
+       new_df[string] = Thje_df[string] #Simple, bring back the column
 def Table():
         global new_df
-        print(new_df)  # Print print the cb's text
-        time.sleep(5)
-        os.system('cls')
+        subroot = Tk() #Create new GUI
+        subroot.title("Data Frame") #Title
+        Label(subroot, text=new_df).pack() # Show the dataframe.
 #For Bugtesting
 def Forgor_step():
     global root, text, new_df, Thje_df
-    root.destroy()
-    root = Tk()
+    root.destroy() #Get rid of the previous
+    root = Tk() #New GUI
     root.title("Bonus Measurements") #GUI name
     root.configure(background= "white") #Background colour
-    root.maxsize(10000,10000)
+    root.maxsize(10000,10000) 
     root.minsize(500,500)
     root.geometry("500x500+20+100")
-    text = Label(root, text="STEP 1.5:") 
+    text = Label(root, text="STEP 1.5:") #Step count
     text.pack()
-    text2 = Label(root, text="More Filtering, only Date due to inconveince in filtering everything else.")
+    text2 = Label(root, text="More Filtering, only Date due to inconveince in filtering everything else.") #Subject to change
     text2.pack()
-    clicked = StringVar()
-    clicked.set('2019')
-    Dates = ['2000','2001','2002','2003','2004','2005','2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018','2019']
-    Date_drop = OptionMenu(root, clicked, *Dates)
+    clicked = StringVar() #Reasons
+    clicked.set('2019') #Default
+    Dates = ['2000','2001','2002','2003','2004','2005','2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018','2019'] #A list
+    Date_drop = OptionMenu(root, clicked, *Dates) #Creating an option Menu
     Date_drop.pack()
-    Button(root, text = 'Filter by Date', command = lambda: Datefilter(clicked)).pack()
+    Button(root, text = 'Filter by Date', command = lambda: Datefilter(clicked)).pack() #The Button for the filter, lambda is a requirement for more complex functions for some reason...
 def Datefilter(clicked):
-  new_df.loc[f'{clicked.get()}-01-01':f'{clicked.get()}-12-31']
-  Next_Step()
+  new_df.loc[f'{clicked.get()}-01-01':f'{clicked.get()}-12-31'] #Remove all dates but those within the given year.
+  Next_Step() #Continue, subject to removal
 def Next_Step():
     global root, text, new_df, Thje_df, Columns, Columns_renamed
-    root.destroy()
-    root = Tk()
+    root.destroy() #Destroy the GUI
+    root = Tk() #New GUI
     root.title("Bonus Measurements") #GUI name
     root.configure(background= "white") #Background colour
     root.maxsize(10000,10000)
     root.minsize(500,500)
     root.geometry("500x500+20+100")
-    text = Label(root, text="STEP 2:") 
+    text = Label(root, text="STEP 2:") #Step Count
     text.pack()
     text2 = Label(root, text="Choose extra measurements to be added to the data.")
     text2.pack()
