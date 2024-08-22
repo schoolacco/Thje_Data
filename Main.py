@@ -6,11 +6,11 @@ import os
 import numpy as np
 plt.style.use('_mpl-gallery')
 try:
-  os.system('cls') #Clearing the terminal
+    os.system('clear') #If not Windows
 except:
     None
 try:
-    os.system('clear') #If not Windows
+    os.system('cls')
 except:
     None
 # Define all the below variables as None
@@ -83,7 +83,7 @@ def Next_Step():
     root.geometry("500x500+20+100")
     text = Label(root, text="STEP 2:") #Step Count
     text.pack()
-    text2 = Label(root, text="Choose extra measurements to be added to the data.")
+    text2 = Label(root, text="Choose extra measurements to be added to the data.") #Instructions
     text2.pack()
     options = [ 
     "(None)",
@@ -96,12 +96,12 @@ def Next_Step():
     "Upper Quartile",
     "Interquartile Range",
     "All"
-    ] 
-    clicked = StringVar() 
-    clicked.set( "(None)" ) 
-    drop = OptionMenu( root , clicked , *options ) 
+    ] #List of statistics
+    clicked = StringVar()  #For later
+    clicked.set( "(None)" ) #Default
+    drop = OptionMenu( root , clicked , *options ) #Creating an options menu for the statistical options
     drop.pack() 
-    Columns = ["(None)"]
+    Columns = ["(None)"] #Default
     try:
       if Thje_df["sellPrice"].equals(new_df["sellPrice"]):
         Columns.append("Sell Price")
@@ -135,43 +135,44 @@ def Next_Step():
             Columns.append("All")
     except:
         None
+# It can all be summarised as checking for a column and then adding it to possible columns
     clicked2 = StringVar() 
     clicked2.set( "Default" ) 
-    drop2 = OptionMenu( root , clicked2 , *Columns ) 
+    drop2 = OptionMenu( root , clicked2 , *Columns ) #An options menu for the columns
     drop2.pack() 
     item9 = Button(root, text="Add",
-            command=lambda : Statistical_Command(clicked2.get(), clicked.get()))
+            command=lambda : Statistical_Command(clicked2.get(), clicked.get())) #A button that the statistical commands based on the options menu 
     item9.pack(anchor='w')
-    item10 = Button(root, text="Display",
+    item10 = Button(root, text="Display", #Debugging
             command=Table)
     item10.pack(anchor='w')
-    item11 = Button(root, text="Graphing Step", command=Exit2)
+    item11 = Button(root, text="Graphing Step", command=Exit2) #Final Step
     item11.pack(anchor='w')
     root.mainloop()
 def Exit2():
     global root
-    root.destroy()
-    Final_Step()
+    root.destroy() #Destroy the GUI
+    Final_Step() #Wait... why did I do this?
 def Final_Step():
     global root, inputtxt
-    root = Tk()
+    root = Tk() 
     root.title("Graphing")
     root.configure(background="white")
     root.maxsize(10000, 10000)
     root.minsize(500, 500)
     root.geometry("500x500+20+20")
 
-    text = Label(root, text="STEP 3")
+    text = Label(root, text="STEP 3") #Step Count
     text.pack()
-    text2 = Label(root, text="Choose type of graph and aesthetic options.")
+    text2 = Label(root, text="Choose type of graph.") #Instructions
     text2.pack()
 
     graphs = [
         "Plot", "Scatter", "Bar", "Stem", "Step", "Fill_Between", "StackPlot",
         "Hist", "BoxPlot", "Errorbar", "ViolinPlot", "Eventplot", "Hist2d",
         "HexBin", "Pie", "Table"
-    ]
-    columns = new_df.columns.tolist()
+    ] #Graph list, not all of them work
+    columns = new_df.columns.tolist() #Nessecary
     
     clicked = StringVar()
     clicked.set("Plot")
@@ -201,7 +202,7 @@ def Final_Step():
 
     text3 = Label(root, text="Note that only the first 2 are of use unless you plan on using a more particular graph.")
     text3.pack()
-
+    text4 = Label(root, text = "y error for a type of graph (integer only)")
     inputtxt = Text(root, height=10, width=25, bg="light yellow")
     inputtxt.pack()
     yerr = Take_input()
@@ -363,5 +364,5 @@ def Graph(t, x, y, z, y2, yerr):
             print(f"Unknown plot type: {t}")
         plt.show()
     except:
-        print("An error occured.")
+        print("An error occured or maybe the graph never worked.")
 root.mainloop()
