@@ -194,7 +194,7 @@ def Final_Step():
     graphs = [
         "Plot", "Scatter", "Bar", "Stem", "Step", "Fill_Between", "StackPlot",
         "Hist", "BoxPlot", "Errorbar", "ViolinPlot", "Eventplot", "Hist2d",
-        "HexBin", "Pie", "Table"
+        "HexBin", "Pie", "Table", "Csv"
     ] #Graph list, not all of them work
     columns = new_df.columns.tolist() #Nessecary
     
@@ -384,6 +384,8 @@ def Graph(t, x, y, z, y2, yerr):
         elif t == 'Pie':
             colors = plt.get_cmap('Blues')(np.linspace(0.2, 0.7, len(x_data)))
             ax.pie(x_data, colors=colors, radius=3, center=(4, 4))
+        elif t == 'Csv':
+            new_df.to_csv('New_Csv.csv')
         else:
             print(f"Unknown plot type: {t}")
         plt.show()
